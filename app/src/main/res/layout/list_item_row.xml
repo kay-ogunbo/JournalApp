@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
         style="@style/CardView.Light">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dip"
+            android:layout_marginStart="4dip"
+            android:layout_marginRight="8dip"
+            android:layout_marginEnd="8dip"
             android:weightSum="1">
 
             <TextView
@@ -26,6 +31,7 @@
                 android:layout_alignParentStart="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:singleLine="true"
+                android:textStyle="bold"
                 tools:text="Kay Ogunbowale"
                 android:ellipsize="end"
                 android:layout_marginBottom="2dp"/>
