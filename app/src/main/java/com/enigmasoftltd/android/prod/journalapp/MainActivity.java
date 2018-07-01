@@ -2,10 +2,12 @@ package com.enigmasoftltd.android.prod.journalapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.enigmasoftltd.android.prod.journalapp.data.AppExecutors;
@@ -41,6 +43,29 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.ItemC
 //        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
 //        mRecyclerView.addItemDecoration(decoration);
 
+        // item touche helper to implement the delete option
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+                // Call the AppExecutors
+                AppExecutors.getsInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int position = viewHolder.getAdapterPosition();
+                        List<Post> posts = mPostAdapter.getPosts();
+                        mDb.postDao().deletePost(posts.get(position));
+                        retrievePosts();
+                    }
+                });
+
+            }
+        }).attachToRecyclerView(mRecyclerView);
+
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +80,12 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.ItemC
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
+        retrievePosts();
+    }
+
+    private void retrievePosts() {
         AppExecutors.getsInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -64,13 +93,14 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.ItemC
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mPostAdapter.setTasks(posts);
+                        mPostAdapter.setPosts(posts);
                     }
                 });
 
             }
         });
     }
+
 
     @Override
     public void onItemClickListener(int clickedItemIndex) {

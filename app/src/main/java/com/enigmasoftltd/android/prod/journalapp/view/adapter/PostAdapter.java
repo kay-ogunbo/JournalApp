@@ -66,9 +66,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.DataViewHolder
         return mPostEntries.size();
     }
 
-    public void setTasks(List<Post> postEntries) {
+    public void setPosts(List<Post> postEntries) {
         mPostEntries = postEntries;
         notifyDataSetChanged();
+    }
+
+    public List<Post> getPosts(){
+        return mPostEntries;
     }
 
     public class DataViewHolder extends RecyclerView.ViewHolder
