@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.ItemC
 
     @Override
     public void onItemClickListener(int clickedItemIndex) {
+        Intent i =  new Intent(MainActivity.this, AddPostActivity.class);
+        i.putExtra(AddPostActivity.EXTRA_POST_ID, clickedItemIndex);
+        startActivity(i);
 
     }
 }
