@@ -113,7 +113,13 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Insert data into the database using the DAO interface
-                mDb.postDao().insertPost(mPostEntry);
+                if (mPostId == DEFAULT_POST_ID){
+                    mDb.postDao().insertPost(mPostEntry);
+                }else{
+                    // Update post
+                    mPostEntry.setId(mPostId);
+                    mDb.postDao().updatePost(mPostEntry);
+                }
                 finish();
             }
         });
